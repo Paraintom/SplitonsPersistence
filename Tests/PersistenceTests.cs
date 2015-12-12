@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using SplitonsPersistence;
@@ -25,7 +24,7 @@ namespace Tests
         public void TestPersistThenRead()
         {
             IPersister toTest = new FilePersister();
-            var transactions = new List<Transaction>();
+            var transactions = new List<UpdatableElement>();
             for (int i = 0; i < 10; i++)
             {
                 transactions.Add(GetFakeTransaction(i));
@@ -33,7 +32,9 @@ namespace Tests
             toTest.Persist(ProjectId, transactions);
             var result = toTest.Read(ProjectId);
             Assert.AreEqual(result.Count, transactions.Count);
-            Assert.IsTrue(result.All(transactions.Contains));
+            var stringInput = JsonConvert.SerializeObject(transactions);
+            var stringResult  = JsonConvert.SerializeObject(result);
+            Assert.AreEqual(stringInput,stringResult);
         }
 
         [Test]

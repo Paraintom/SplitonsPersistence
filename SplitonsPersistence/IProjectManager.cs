@@ -12,6 +12,6 @@ namespace SplitonsPersistence
         /// <param name="from">Date of last synch</param>
         /// <param name="toSynchronize">List transaction updated client side</param>
         /// <returns>The List of Transaction synch (include the one sent to synch more the potential new ones)</returns>
-        List<Transaction> Update(string projectId, long from, List<Transaction> toSynchronize);
+        List<UpdatableElement> Update(string projectId, long from, List<UpdatableElement> toSynchronize);
     }
 }

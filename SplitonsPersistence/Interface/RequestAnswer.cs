@@ -18,7 +18,7 @@ namespace SplitonsPersistence.Interface
     {
         public string projectId { get; set; }
         public long lastUpdated { get; set; }
-        public List<Transaction> toUpdate { get; set; }
+        public List<UpdatableElement> toUpdate { get; set; }
     }
     // ReSharper restore InconsistentNaming
 }

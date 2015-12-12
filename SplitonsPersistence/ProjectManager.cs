@@ -14,7 +14,7 @@ namespace SplitonsPersistence
             this.persister = persister;
         }
 
-        public List<Transaction> Update(string projectId, long from, List<Transaction> toSynchronize)
+        public List<UpdatableElement> Update(string projectId, long from, List<UpdatableElement> toSynchronize)
         {
             lock (string.Intern(projectId))
             {

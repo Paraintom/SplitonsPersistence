@@ -36,7 +36,7 @@ namespace Tests
             var synchRequest = new SplitonSynchRequest();
             synchRequest.lastUpdated = DateTime.Parse("2000-02-02").JavascriptTicks();
             synchRequest.projectId = "projectwq";
-            synchRequest.toUpdate = new List<Transaction>() { GetFakeTransaction(1) };
+            synchRequest.toUpdate = new List<UpdatableElement>() { GetFakeTransaction(1) };
             var request = new RequestMessage();
             request.id = 12;
             request.request = synchRequest;

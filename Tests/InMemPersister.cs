@@ -6,15 +6,15 @@ namespace Tests
 {
     class InMemPersister : IPersister
     {
-        Dictionary<string,List<Transaction>> cached = new Dictionary<string, List<Transaction>>();
-        public void Persist(string projectId, List<Transaction> transactions)
+        Dictionary<string, List<UpdatableElement>> cached = new Dictionary<string, List<UpdatableElement>>();
+        public void Persist(string projectId, List<UpdatableElement> transactions)
         {
             cached[projectId] = transactions;
         }
 
-        public List<Transaction> Read(string projectId)
+        public List<UpdatableElement> Read(string projectId)
         {
-            return cached.ContainsKey(projectId) ? cached[projectId] : new List<Transaction>();
+            return cached.ContainsKey(projectId) ? cached[projectId] : new List<UpdatableElement>();
         }
     }
 }

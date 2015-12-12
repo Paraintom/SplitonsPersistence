@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using System.Threading;
-using Newtonsoft.Json;
 using NLog;
 using SplitonsPersistence.Interface;
 using SplitonsPersistence.Persistence;

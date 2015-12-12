@@ -69,7 +69,8 @@
     <Compile Include="Program.cs" />
     <Compile Include="ProjectManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Transaction.cs" />
+    <Compile Include="UpdatableElement.cs" />
+    <Compile Include="UpdatableElementConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">

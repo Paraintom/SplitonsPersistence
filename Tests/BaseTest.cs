@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using Newtonsoft.Json;
 using NLog;
 using NLog.Config;
 using NLog.Targets;
@@ -34,12 +35,23 @@ namespace Tests
             Debug.WriteLine(message);
         }
 
-        public static Transaction GetFakeTransaction(int number)
+        public static UpdatableElement GetFakeTransaction(int number)
         {
-            return new Transaction() { amount = (float)number, comment = "Comment" + number,
+            return GetFakeTransaction(number, number);
+        }
+
+        public static UpdatableElement GetFakeTransaction(int number, int amount)
+        {
+            var lastUpdated = DateTime.Now.JavascriptTicks();
+            var transaction = new Transaction()
+            {
+                amount = amount,
+                comment = "Comment" + number,
                 currency = "ccy" + number, @from = "from" + number, to = new []{"to" + number}, id = number.ToString(),
-                                       lastUpdated = DateTime.Now.JavascriptTicks()
+                                       lastUpdated = lastUpdated
             };
+            var jsonTransaction = JsonConvert.SerializeObject(transaction);
+            return new UpdatableElement() { id = number.ToString(), lastUpdated = lastUpdated, SerializedValue = jsonTransaction };
         }
     }
 }

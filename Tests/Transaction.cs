@@ -1,19 +1,11 @@
 ﻿using System;
 using System.Linq;
 
-namespace SplitonsPersistence
+namespace Tests
 {
     // ReSharper disable InconsistentNaming because ofserialisation Json.
-    public interface ITransaction
+    public struct Transaction 
     {
-        string id { get; set; }
-        long lastUpdated { get; set; }
-    }
-
-    public struct Transaction : ITransaction
-    {
-       
-
         public string id { get; set; }
         public long lastUpdated { get; set; }
         public string from { get; set; }
@@ -22,6 +14,11 @@ namespace SplitonsPersistence
         public float amount { get; set; }
         public string currency { get; set; }
         public bool deleted { get; set; }
+
+        public string Serialize()
+        {
+            throw new NotImplementedException();
+        }
 
         public override string ToString()
         {

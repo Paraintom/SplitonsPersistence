@@ -11,7 +11,7 @@ namespace SplitonsPersistence.Persistence
         private Logger log = LogManager.GetCurrentClassLogger();
 
 
-        public void Persist(string projectId, List<Transaction> transactions)
+        public void Persist(string projectId, List<UpdatableElement> transactions)
         {
             try
             {
@@ -45,9 +45,9 @@ namespace SplitonsPersistence.Persistence
             }
         }
 
-        public List<Transaction> Read(string projectId)
+        public List<UpdatableElement> Read(string projectId)
         {
-            List<Transaction> result= new List<Transaction>();;
+            List<UpdatableElement> result = new List<UpdatableElement>(); ;
             try
             {
                 log.Debug("Reading project {0}", projectId);
@@ -55,7 +55,7 @@ namespace SplitonsPersistence.Persistence
                 if (File.Exists(stateFileName))
                 {
                     var stringState = File.ReadAllText(stateFileName);
-                    var temp = JsonConvert.DeserializeObject<List<Transaction>>(stringState);
+                    var temp = JsonConvert.DeserializeObject<List<UpdatableElement>>(stringState);
                     temp.ForEach(o=>result.Add(o));
                 }
                 else

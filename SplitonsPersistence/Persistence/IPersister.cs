@@ -4,7 +4,7 @@ namespace SplitonsPersistence.Persistence
 {
     public interface IPersister
     {
-        void Persist(string projectId, List<Transaction> transactions);
-        List<Transaction> Read(string projectId);
+        void Persist(string projectId, List<UpdatableElement> transactions);
+        List<UpdatableElement> Read(string projectId);
     }
 }
