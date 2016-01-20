@@ -31,7 +31,14 @@ namespace SplitonsPersistence
             var toSend = projectManager.Update(request.request.projectId,
                 request.request.lastUpdated, request.request.toUpdate);
             var splitonSynchRequest = new SplitonSynchRequest();
-            splitonSynchRequest.lastUpdated = toSend.Select(o => o.lastUpdated).Max();
+            //If there is no update, we do not change the lastUpdate
+            var lastUpdated = request.request.lastUpdated;
+            if (toSend.Count != 0)
+            {
+                //But if there is some change, the last update is the date of the last received update!
+                lastUpdated = toSend.Select(o => o.lastUpdated).Max();
+            }
+            splitonSynchRequest.lastUpdated = lastUpdated;
             splitonSynchRequest.projectId = request.request.projectId;
             splitonSynchRequest.toUpdate = toSend;
             var answer = new AnwserMessage();

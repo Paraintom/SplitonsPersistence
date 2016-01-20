@@ -32,7 +32,8 @@ namespace Tests
 
         public void Write(string message)
         {
-            Debug.WriteLine(message);
+            Logger logger = LogManager.GetLogger("ee");
+            logger.Debug(message);
         }
 
         public static UpdatableElement GetFakeTransaction(int number)
