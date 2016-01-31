@@ -12,13 +12,31 @@ namespace Tests
     class ProjectManagerTests : BaseTest
     {
         const string ProjectId = "projTest-002";
+        private static readonly long MinJsJavascriptTicks = DateTime.MinValue.JavascriptTicks();
+
         [Test]
         public void NewProjectWorks()
         {
             IProjectManager toTest = new ProjectManager(new InMemPersister());
-            var result = toTest.Update(ProjectId, DateTime.MinValue.JavascriptTicks(), new List<UpdatableElement>() { GetFakeTransaction(1) });
+            var result = toTest.Update(ProjectId, MinJsJavascriptTicks, new List<UpdatableElement>() { GetFakeTransaction(1) });
             Assert.AreEqual(1, result.Count);
             Write(result.First().ToString());
+        }
+
+        [Test]
+        public void UpdateFieldWorking()
+        {
+            IProjectManager toTest = new ProjectManager(new InMemPersister());
+            var clientSideUpdate = GetFakeTransaction(1);
+            Thread.Sleep(500);
+            var result = toTest.Update(ProjectId, MinJsJavascriptTicks, new List<UpdatableElement>() { clientSideUpdate });
+            Assert.AreEqual(1, result.Count);
+            var serverSideUpdate = result.First();
+            //Server should update the lastUpdated!
+            Write("Received " + serverSideUpdate.SerializedValue);
+            var serializedUpdate = JsonConvert.DeserializeObject<Transaction>(JsonConvert.SerializeObject(serverSideUpdate));
+            Assert.AreNotEqual(clientSideUpdate.lastUpdated, serializedUpdate.lastUpdated);
+            Write(serverSideUpdate.ToString());
         }
 
         [Test]
@@ -35,7 +53,7 @@ namespace Tests
         public void OldTransactionSkipped()
         {
             IProjectManager toTest = new ProjectManager(new InMemPersister());
-            var result = toTest.Update(ProjectId, DateTime.MinValue.JavascriptTicks(), new List<UpdatableElement>() { GetFakeTransaction(1) });
+            var result = toTest.Update(ProjectId, MinJsJavascriptTicks, new List<UpdatableElement>() { GetFakeTransaction(1) });
             var savedOne = result.First();
             //We inject a old one, should be skiped
             var outOfDateTransaction = GetFakeTransaction(1);
@@ -48,7 +66,7 @@ namespace Tests
         public void NewTransactionReplace()
         {
             IProjectManager toTest = new ProjectManager(new InMemPersister());
-            var result = toTest.Update(ProjectId, DateTime.MinValue.JavascriptTicks(), new List<UpdatableElement>() { GetFakeTransaction(1) });
+            var result = toTest.Update(ProjectId, MinJsJavascriptTicks, new List<UpdatableElement>() { GetFakeTransaction(1) });
             var savedOne = result.First();
             Thread.Sleep(1);
             //We inject a new one, should override the previous one
@@ -64,13 +82,13 @@ namespace Tests
         public void OnlyKeekTransactionOlderThanFrom()
         {
             IProjectManager toTest = new ProjectManager(new InMemPersister());
-            var result = toTest.Update(ProjectId, DateTime.MinValue.JavascriptTicks(), new List<UpdatableElement>()
+            var result = toTest.Update(ProjectId, MinJsJavascriptTicks, new List<UpdatableElement>()
             {
                 GetFakeTransaction(1), GetFakeTransaction(2), GetFakeTransaction(3)
             });
             Assert.AreEqual(3, result.Count);
             //If we ask for them again we should see them :
-            result = toTest.Update(ProjectId, DateTime.MinValue.JavascriptTicks(), new List<UpdatableElement>());
+            result = toTest.Update(ProjectId, MinJsJavascriptTicks, new List<UpdatableElement>());
             Assert.AreEqual(3, result.Count);
             //But if we just check the update, we should see nothing :
             Thread.Sleep(2);

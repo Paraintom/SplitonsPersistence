@@ -6,6 +6,8 @@ namespace SplitonsPersistence
     [JsonConverter(typeof (UpdatableElementConverter))]
     public struct UpdatableElement
     {
+        public const string LastUpdatedFieldName = "lastUpdated";
+        
         public string SerializedValue { get; set; }
         public string id { get; set; }
         public long lastUpdated { get; set; }

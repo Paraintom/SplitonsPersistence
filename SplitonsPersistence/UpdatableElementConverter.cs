@@ -34,31 +34,24 @@ namespace SplitonsPersistence
             var element = (UpdatableElement)value;
             var jsonObject = (JObject)JsonConvert.DeserializeObject(element.SerializedValue);
 
-            // find all properties with type 'int'
             //element.SerializedValue
             writer.WriteStartObject();
             foreach (var property in jsonObject.Properties())
             {
                 writer.WritePropertyName(property.Name);
-                // let the serializer serialize the value itself
-                // (so this converter will work with any other type, not just int)
-                serializer.Serialize(writer, property.Value);
+
+                if (UpdatableElement.LastUpdatedFieldName.Equals(property.Name))
+                {
+                    // let the serializer serialize the value itself
+                    serializer.Serialize(writer, element.lastUpdated);
+                }
+                else
+                {
+                    // let the serializer serialize the value itself
+                    serializer.Serialize(writer, property.Value);
+                }
             }
             writer.WriteEndObject();
-
-            /*var properties = value.GetType().GetProperties();
-
-            writer.WriteStartObject();
-
-            foreach (var property in properties)
-            {
-                // write property name
-                writer.WritePropertyName(property.Name);
-                // let the serializer serialize the value itself
-                // (so this converter will work with any other type, not just int)
-                serializer.Serialize(writer, property.GetValue(value, null));
-            }*/
-
         }
     }
 }
