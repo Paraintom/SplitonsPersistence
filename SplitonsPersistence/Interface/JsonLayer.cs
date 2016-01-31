@@ -25,13 +25,13 @@ namespace SplitonsPersistence.Interface
                 //dynamic request = JObject.Parse(s);
                 if (!string.IsNullOrEmpty(request.request.projectId))
                 {
-                    logger.Info("Request {1} received for project {0}".FormatWith(request.request.projectId, request.id));
-
+                    logger.Info("Receiving request {0} : {1}".FormatWith(request.id, s));
                     this.OnRequest.RaiseEvent(this, request);
                 }
                 else
                 {
                     //error case : projectId is null or empty
+                    logger.Warn("Ignoring request {0} : projectId is null or empty".FormatWith(request.id));
                 }
             }
             catch (Exception ex)

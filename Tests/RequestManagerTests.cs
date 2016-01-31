@@ -41,7 +41,7 @@ namespace Tests
             request.id = 12;
             request.request = synchRequest;
             string serializeRequest = JsonConvert.SerializeObject(request);
-            Write("Receiving "+ serializeRequest);
+            Write("Simulating a string request from websocket connection ...");
             w.SimulateReceived(serializeRequest);
 
             Assert.AreEqual(request.id, requestReceived.id);
