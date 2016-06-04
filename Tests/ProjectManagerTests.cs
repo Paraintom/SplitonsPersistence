@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using Moq;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using SplitonsPersistence;
+using SplitonsPersistence.Persistence;
 
 namespace Tests
 {
@@ -21,6 +23,17 @@ namespace Tests
             var result = toTest.Update(ProjectId, MinJsJavascriptTicks, new List<UpdatableElement>() { GetFakeTransaction(1) });
             Assert.AreEqual(1, result.Count);
             Write(result.First().ToString());
+        }
+
+        [Test]
+        public void EmptyProjectIsNotPersisted()
+        {
+            var mockedPersister = new Mock<IPersister>();
+            mockedPersister.Setup(o => o.Read(It.IsAny<string>())).Returns(new List<UpdatableElement>());
+            IProjectManager toTest = new ProjectManager(mockedPersister.Object);
+            var result = toTest.Update(ProjectId, MinJsJavascriptTicks, new List<UpdatableElement>());
+            Assert.AreEqual(0, result.Count);
+            mockedPersister.Verify(o => o.Persist(It.IsAny<string>(), It.IsAny<List<UpdatableElement>>()), Times.Never);
         }
 
         [Test]

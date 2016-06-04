@@ -44,7 +44,11 @@ namespace SplitonsPersistence
                     newStateTransaction.lastUpdated = DateTime.Now.JavascriptTicks();
                     currentState.Add(newStateTransaction);
                 }
-                persister.Persist(projectId, currentState);
+
+                if (currentState.Any())
+                {
+                    persister.Persist(projectId, currentState);
+                }
                 return currentState.Where(o=>o.lastUpdated >= from).ToList();
             }
         }
